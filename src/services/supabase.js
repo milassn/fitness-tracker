@@ -1,9 +1,15 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Diese Werte müssen Sie aus Ihrem Supabase-Projekt holen
-const SUPABASE_URL = "https://dbjnxezlixrwphouxddr.supabase.co"; // z.B. https://xyz.supabase.co
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiam54ZXpsaXhyd3Bob3V4ZGRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMjA3MDgsImV4cCI6MjA2MTY5NjcwOH0.a6_FqnadkPChoJ_M-XlpIY476RxU3haRep8S2aPESMo";
+// Lade Konfiguration aus Umgebungsvariablen
+const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
+
+// Validierung: Prüfe ob Umgebungsvariablen gesetzt sind
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  throw new Error(
+    "Supabase URL and Anon Key must be set as environment variables"
+  );
+}
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
