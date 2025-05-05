@@ -1,13 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Lade Konfiguration aus Umgebungsvariablen
+// Diese Werte werden aus Umgebungsvariablen geladen
 const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
-// Validierung: Prüfe ob Umgebungsvariablen gesetzt sind
+// Stelle sicher, dass die Umgebungsvariablen gesetzt sind
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   throw new Error(
-    "Supabase URL and Anon Key must be set as environment variables"
+    "Supabase URL und Anon Key müssen als Umgebungsvariablen gesetzt sein"
   );
 }
 
