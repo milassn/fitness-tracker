@@ -527,7 +527,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               </table>
             </div>
           )}
-          )}
         </div>
       ) : (
         // Mesozyklus Liste
