@@ -1,6 +1,36 @@
-// Modul für die persistente Speicherung von Daten im LocalStorage
+// Modul für die persistente Speicherung von Daten im LocalStorage und Supabase
+import { getCurrentUser } from "../services/supabase";
 
 const APP_PREFIX = "fitness_tracker_";
+
+/**
+ * Fügt automatisch user_id und updated_at zu Objekten hinzu
+ * @param {any} data - Die zu speichernden Daten
+ * @returns {any} Erweiterte Daten mit user_id und updated_at
+ */
+export async function addUserMetadata(data) {
+  if (!data) return data;
+
+  const user = await getCurrentUser();
+  const userId = user?.id || "anonymous";
+  const timestamp = new Date().toISOString();
+
+  if (Array.isArray(data)) {
+    return data.map((item) => ({
+      ...item,
+      user_id: userId,
+      updated_at: timestamp,
+    }));
+  } else if (typeof data === "object") {
+    return {
+      ...data,
+      user_id: userId,
+      updated_at: timestamp,
+    };
+  }
+
+  return data;
+}
 
 /**
  * Speichert Daten im LocalStorage
@@ -67,5 +97,20 @@ export function clearAllData() {
   } catch (error) {
     console.error("Fehler beim Löschen aller Daten:", error);
     return false;
+  }
+}
+
+/**
+ * Migriert bestehende Local Storage Daten und fügt Benutzer-Metadaten hinzu
+ */
+export async function migrateLocalStorageData() {
+  const tables = ["exercises", "workouts", "mesocycles", "trainingGoals"];
+
+  for (const table of tables) {
+    const data = loadData(table);
+    if (data) {
+      const migratedData = await addUserMetadata(data);
+      saveData(table, migratedData);
+    }
   }
 }
