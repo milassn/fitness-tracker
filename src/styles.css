@@ -1020,4 +1020,437 @@ Neuen Chat starten
     padding: 15px;
   }
 }
-Organizing Fitness App Files - Claude
+
+/* Mobile-First Dashboard Styles */
+
+/* Mobile Dashboard Overview */
+.mobile-dashboard {
+  padding: 15px;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.mobile-dashboard-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mobile-start-training-card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-dashboard-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.mobile-next-training-info {
+  margin-bottom: 20px;
+}
+
+.mobile-training-type {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.mobile-training-date {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.mobile-training-workout {
+  font-size: 1rem;
+  color: #666;
+}
+
+.mobile-start-btn {
+  width: 100%;
+  padding: 20px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mobile-start-btn:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.mobile-no-training {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Mobile Training Execution */
+.mobile-training-execution {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 100vh;
+}
+
+.mobile-training-header {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.mobile-training-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.mobile-training-date {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Trainingszeit Display */
+.training-time {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time-label {
+  font-weight: bold;
+  color: #666;
+}
+
+.time-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Persistent Timer */
+.persistent-timer {
+  background: #2c3e50;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+}
+
+.timer-display {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.timer-label {
+  margin-right: 10px;
+}
+
+.timer-time {
+  color: #3498db;
+}
+
+.timer-stop-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Mobile Exercises List */
+.mobile-exercises-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mobile-exercise-card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-exercise-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.mobile-sets-grid {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.mobile-set-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.mobile-set-header {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.mobile-set-label {
+  font-weight: bold;
+}
+
+.mobile-set-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-set-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid #3498db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #2c3e50;
+  touch-action: manipulation;
+  background: white;
+}
+
+.mobile-set-circle.completed {
+  background: #3498db;
+  color: white;
+}
+
+.mobile-reps-number {
+  user-select: none;
+}
+
+.mobile-reps-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.mobile-adjust-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #3498db;
+  background: white;
+  color: #3498db;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  touch-action: manipulation;
+}
+
+.mobile-adjust-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.mobile-adjust-btn:active {
+  background: #3498db;
+  color: white;
+}
+
+/* Mobile Exercise Inputs */
+.mobile-exercise-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.mobile-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-input-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.mobile-label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.mobile-weight-input,
+.mobile-rpe-select,
+.mobile-comment-input {
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.mobile-rpe-select {
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23666' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 15px center;
+  background-size: 12px;
+  padding-right: 45px;
+}
+
+/* Mobile Training Summary */
+.mobile-training-summary {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.mobile-training-rpe-select,
+.mobile-training-comment {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.mobile-training-comment {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.mobile-complete-btn {
+  width: 100%;
+  padding: 20px;
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mobile-complete-btn.disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* Mobile Stats Component Adjustments */
+.training-stats {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.stat-card {
+  padding: 15px;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+}
+
+/* Mobile Responsive */
+@media (min-width: 768px) {
+  .mobile-dashboard {
+    padding: 20px;
+  }
+
+  .mobile-start-training-card {
+    padding: 30px;
+  }
+
+  .mobile-exercise-inputs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .mobile-sets-grid {
+    justify-content: flex-start;
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Touch-optimized styles */
+@media (hover: none) and (pointer: coarse) {
+  .mobile-set-circle,
+  .mobile-adjust-btn,
+  .mobile-start-btn,
+  .mobile-complete-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .mobile-weight-input,
+  .mobile-rpe-select,
+  .mobile-comment-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-dashboard {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .stats-row {
+    grid-

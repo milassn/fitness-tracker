@@ -65,6 +65,62 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
     setShowForm(true);
   };
 
+  // Neue Funktionen nach moveTraining
+  const addSingleTraining = (mesoId) => {
+    const updatedMesos = mesocycles.map((meso) => {
+      if (meso.id === mesoId) {
+        const existingTrainings = meso.generatedTrainings || [];
+        const lastTraining = existingTrainings[existingTrainings.length - 1];
+        const nextNumber = lastTraining ? lastTraining.number + 1 : 1;
+
+        const newTraining = {
+          number: nextNumber,
+          date: new Date().toISOString().split("T")[0], // Heute
+          week: lastTraining ? lastTraining.week : 1,
+          type: "A", // Standard: Training A
+          workoutId: meso.workoutA, // Standard: Workout A
+          workout: workoutTemplates.find((w) => w.id === meso.workoutA),
+          completed: false,
+        };
+
+        return {
+          ...meso,
+          generatedTrainings: [...existingTrainings, newTraining],
+        };
+      }
+      return meso;
+    });
+
+    setMesocycles(updatedMesos);
+    saveData("mesocycles", updatedMesos);
+
+    if (onMesocyclesChange) {
+      onMesocyclesChange(updatedMesos);
+    }
+  };
+
+  const deleteSingleTraining = (mesoId, trainingNumber) => {
+    const updatedMesos = mesocycles.map((meso) => {
+      if (meso.id === mesoId) {
+        const updatedTrainings = meso.generatedTrainings.filter(
+          (training) => training.number !== trainingNumber
+        );
+        return {
+          ...meso,
+          generatedTrainings: updatedTrainings,
+        };
+      }
+      return meso;
+    });
+
+    setMesocycles(updatedMesos);
+    saveData("mesocycles", updatedMesos);
+
+    if (onMesocyclesChange) {
+      onMesocyclesChange(updatedMesos);
+    }
+  };
+
   const startEditMeso = (meso) => {
     setEditingMeso(meso);
     setMesoForm({
@@ -277,7 +333,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               <X size={24} />
             </button>
           </div>
-
           <div className="form-group">
             <label>Nummer:</label>
             <input
@@ -287,7 +342,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               className="form-control bg-gray-100"
             />
           </div>
-
           <div className="flex gap-4">
             <div className="form-group flex-1">
               <label>Startdatum:</label>
@@ -312,7 +366,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               />
             </div>
           </div>
-
           <div className="form-group">
             <label>Trainingsmuster:</label>
             <select
@@ -326,7 +379,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               <option value="ABABAB">ABABAB (6× pro Woche)</option>
             </select>
           </div>
-
           <div className="form-group">
             <label>Trainingstage:</label>
             <div className="grid grid-cols-3 gap-4">
@@ -361,7 +413,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               )}
             </div>
           </div>
-
           <div className="form-group">
             <label>Workout A:</label>
             <select
@@ -379,7 +430,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               ))}
             </select>
           </div>
-
           <div className="form-group">
             <label>Workout B:</label>
             <select
@@ -397,7 +447,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               ))}
             </select>
           </div>
-
           <div className="form-actions">
             <button
               onClick={generateTrainings}
@@ -423,7 +472,6 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               Abbrechen
             </button>
           </div>
-
           {mesoForm.generatedTrainings.length > 0 && (
             <div className="mt-6">
               <h3 className="text-lg font-medium mb-2">
@@ -432,6 +480,15 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
               <p className="text-sm text-gray-600 mb-2">
                 Gesamt: {mesoForm.generatedTrainings.length} Trainings
               </p>
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={() => addSingleTraining(mesoForm.id)}
+                  className="btn btn-primary"
+                  disabled={!mesoForm.id}
+                >
+                  <Plus size={18} className="mr-1" /> Training hinzufügen
+                </button>
+              </div>
               <table className="min-w-full">
                 <thead>
                   <tr className="bg-gray-50">
@@ -440,6 +497,7 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
                     <th className="p-2 text-left">Woche</th>
                     <th className="p-2 text-left">Typ</th>
                     <th className="p-2 text-left">Workout</th>
+                    <th className="p-2 text-left">Aktionen</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -452,11 +510,23 @@ function MesocycleManagement({ workoutTemplates, onMesocyclesChange }) {
                       <td className="p-2">
                         {training.workout?.name || "Unbekannt"}
                       </td>
+                      <td className="p-2">
+                        <button
+                          onClick={() =>
+                            deleteSingleTraining(mesoForm.id, training.number)
+                          }
+                          className="btn btn-delete"
+                          disabled={!mesoForm.id}
+                        >
+                          <Trash2 size={18} /> Löschen
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+          )}
           )}
         </div>
       ) : (

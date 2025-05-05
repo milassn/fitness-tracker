@@ -166,7 +166,8 @@ function TrainingGoals({ exercises }) {
         updateGoal(trainingKey, `set${setNumber}_rpe`, bulkValues.rpe);
       }
 
-      if (selectedExerciseObj?.allowsDropset) {
+      // Update dropset settings only for exercises that allow it
+      if (canUseDropset) {
         updateGoal(
           trainingKey,
           `set${setNumber}_dropset`,
@@ -311,7 +312,7 @@ function TrainingGoals({ exercises }) {
           </div>
         </td>
         <td className="p-2 text-center">
-          {selectedExerciseObj?.allowsDropset && (
+          {selectedExerciseObj?.allowsDropset ? (
             <input
               type="checkbox"
               checked={setInfo.isDropset}
@@ -324,6 +325,8 @@ function TrainingGoals({ exercises }) {
               }
               className="cursor-pointer"
             />
+          ) : (
+            "-"
           )}
         </td>
         <td className="p-2 text-center">
@@ -432,8 +435,8 @@ function TrainingGoals({ exercises }) {
                 step="0.5"
               />
             </td>
-            <td></td>
-            <td></td>
+            <td className="p-2 text-center">-</td>
+            <td className="p-2 text-center"></td>
           </tr>
         );
       }
@@ -864,6 +867,7 @@ function TrainingGoals({ exercises }) {
                                         })
                                       }
                                       className="form-control"
+                                      disabled={!canUseDropset}
                                     />
                                   </div>
                                   <div>
@@ -881,6 +885,7 @@ function TrainingGoals({ exercises }) {
                                       }
                                       className="form-control"
                                       step="0.5"
+                                      disabled={!canUseDropset}
                                     />
                                   </div>
                                 </>
@@ -935,9 +940,7 @@ function TrainingGoals({ exercises }) {
                           <th className="p-2 text-left">Satz</th>
                           <th className="p-2 text-left">Wiederholungen</th>
                           <th className="p-2 text-left">Gewicht</th>
-                          {canUseDropset && (
-                            <th className="p-2 text-center">Dropset</th>
-                          )}
+                          <th className="p-2 text-center">Dropset</th>
                           <th className="p-2 text-center">RPE</th>
                         </tr>
                       </thead>

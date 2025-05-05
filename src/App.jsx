@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import ExerciseList from "./components/Exercises/ExerciseList";
-import { Dumbbell, CalendarDays } from "lucide-react";
 import WorkoutManagement from "./components/WorkoutManagement";
 import MesocycleManagement from "./components/MesocycleManagement";
 import TrainingGoals from "./components/TrainingGoals";
-import Calendar from "./components/Calendar"; // NEU
+import Calendar from "./components/Calendar";
+import Dashboard from "./components/Dashboard"; // NEU
 import { saveData, loadData } from "./utils/storage";
 
 function App() {
@@ -16,7 +16,6 @@ function App() {
   const [exercises, setExercises] = useState(() => {
     return loadData("exercises") || [];
   });
-  // NEU: Mesocycles State für den Kalender
   const [mesocycles, setMesocycles] = useState(() => {
     return loadData("mesocycles") || [];
   });
@@ -42,7 +41,6 @@ function App() {
     saveData("workoutTemplates", updatedTemplates);
   };
 
-  // NEU: Handler für Mesocycles-Änderungen
   const handleMesocyclesChange = (updatedMesocycles) => {
     setMesocycles(updatedMesocycles);
   };
@@ -86,13 +84,7 @@ function App() {
 
         {/* Inhaltsbereich */}
         <div className="tab-content">
-          {activeMainTab === "dashboard" && (
-            <div>
-              <h2>Dashboard</h2>
-              <p>Hier siehst du eine Übersicht deiner Aktivitäten und Ziele.</p>
-              {/* Hier später Dashboard-Komponenten */}
-            </div>
-          )}
+          {activeMainTab === "dashboard" && <Dashboard />}
 
           {activeMainTab === "calendar" && <Calendar />}
 

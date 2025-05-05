@@ -4,6 +4,8 @@ import {
   ChevronRight,
   X,
   Calendar as CalendarIcon,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import { loadData, saveData } from "../utils/storage";
 import { ACTIVITY_TYPES } from "./MesocycleManagement";
@@ -235,6 +237,8 @@ function DayModal({ selectedDay, activeMeso, onClose, onUpdate }) {
   const [activityType, setActivityType] = useState(ACTIVITY_TYPES.PAUSE);
   const [activityName, setActivityName] = useState("");
   const [notes, setNotes] = useState("");
+  const [showAddTraining, setShowAddTraining] = useState(false);
+  const [newTrainingType, setNewTrainingType] = useState("A");
 
   useEffect(() => {
     if (selectedDay.activity) {
@@ -288,6 +292,59 @@ function DayModal({ selectedDay, activeMeso, onClose, onUpdate }) {
     onUpdate(updatedMesocycles);
   };
 
+  // NEUE FUNKTION: Training löschen
+  const deleteTraining = () => {
+    if (!activeMeso || !selectedDay.training) return;
+
+    const updatedMeso = { ...activeMeso };
+    updatedMeso.generatedTrainings = updatedMeso.generatedTrainings.filter(
+      (training) => training.number !== selectedDay.training.number
+    );
+
+    const updatedMesocycles = activeMeso.mesocycles?.map((m) =>
+      m.id === activeMeso.id ? updatedMeso : m
+    ) || [updatedMeso];
+
+    onUpdate(updatedMesocycles);
+    onClose();
+  };
+
+  // NEUE FUNKTION: Training hinzufügen
+  const addTraining = () => {
+    if (!activeMeso) return;
+
+    const updatedMeso = { ...activeMeso };
+    const existingTrainings = updatedMeso.generatedTrainings || [];
+    const lastTraining = existingTrainings[existingTrainings.length - 1];
+    const nextNumber = lastTraining ? lastTraining.number + 1 : 1;
+
+    const workoutTemplates = loadData("workoutTemplates") || [];
+
+    const newTraining = {
+      number: nextNumber,
+      date: selectedDay.date,
+      week: lastTraining ? lastTraining.week : 1,
+      type: newTrainingType,
+      workoutId:
+        newTrainingType === "A" ? activeMeso.workoutA : activeMeso.workoutB,
+      workout: workoutTemplates.find(
+        (w) =>
+          w.id ===
+          (newTrainingType === "A" ? activeMeso.workoutA : activeMeso.workoutB)
+      ),
+      completed: false,
+    };
+
+    updatedMeso.generatedTrainings = [...existingTrainings, newTraining];
+
+    const updatedMesocycles = activeMeso.mesocycles?.map((m) =>
+      m.id === activeMeso.id ? updatedMeso : m
+    ) || [updatedMeso];
+
+    onUpdate(updatedMesocycles);
+    setShowAddTraining(false);
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal">
@@ -314,23 +371,76 @@ function DayModal({ selectedDay, activeMeso, onClose, onUpdate }) {
                 <p>Workout: {selectedDay.training.workout?.name}</p>
                 <p>Woche: {selectedDay.training.week}</p>
               </div>
-              <button
-                onClick={markTrainingComplete}
-                className={`btn ${
-                  selectedDay.training.completed
-                    ? "btn-secondary"
-                    : "btn-primary"
-                }`}
-              >
-                {selectedDay.training.completed
-                  ? "Als unvollständig markieren"
-                  : "Als erledigt markieren"}
-              </button>
+              <div className="button-group">
+                <button
+                  onClick={markTrainingComplete}
+                  className={`btn ${
+                    selectedDay.training.completed
+                      ? "btn-secondary"
+                      : "btn-primary"
+                  }`}
+                >
+                  {selectedDay.training.completed
+                    ? "Als unvollständig markieren"
+                    : "Als erledigt markieren"}
+                </button>
+                <button
+                  onClick={deleteTraining}
+                  className="btn btn-delete"
+                  style={{ marginLeft: "10px" }}
+                >
+                  <Trash2 size={18} className="mr-1" /> Training löschen
+                </button>
+              </div>
             </div>
           )}
 
           {!selectedDay.training && !selectedDay.activity && (
             <div className="activity-section">
+              {!showAddTraining ? (
+                <div>
+                  <h4>Was möchten Sie für diesen Tag planen?</h4>
+                  <div
+                    className="button-group"
+                    style={{ marginBottom: "20px" }}
+                  >
+                    <button
+                      onClick={() => setShowAddTraining(true)}
+                      className="btn btn-primary"
+                    >
+                      <Plus size={18} className="mr-1" /> Training hinzufügen
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <h4>Training hinzufügen</h4>
+                  <div className="form-group">
+                    <label>Training Typ:</label>
+                    <select
+                      value={newTrainingType}
+                      onChange={(e) => setNewTrainingType(e.target.value)}
+                      className="form-control"
+                    >
+                      <option value="A">Training A</option>
+                      <option value="B">Training B</option>
+                    </select>
+                  </div>
+                  <div className="button-group">
+                    <button onClick={addTraining} className="btn btn-primary">
+                      Speichern
+                    </button>
+                    <button
+                      onClick={() => setShowAddTraining(false)}
+                      className="btn btn-secondary"
+                      style={{ marginLeft: "10px" }}
+                    >
+                      Abbrechen
+                    </button>
+                  </div>
+                </div>
+              )}
+
               <h4>Aktivität hinzufügen</h4>
               <div className="form-group">
                 <label>Typ:</label>
